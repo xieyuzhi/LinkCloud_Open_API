@@ -1,0 +1,3017 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "[xyz]:This document is a development guide about LYNK Cloud open APIs.",
+    "version": "0.1.0",
+    "title": "LYNK Cloud Open API Guide",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "xin0607.liu@samsung.com"
+    },
+    "license": {
+      "name": "Apache 2.0"
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Oauth2 Token",
+      "description": "Before calling the open API, client has to get OAuth2 access token and expire time by client credential."
+    },
+    {
+      "name": "Company Management",
+      "description": "Get company information for third party users."
+    },
+    {
+      "name": "Site Management",
+      "description": "Get site information for third party users."
+    },
+    {
+      "name": "License Management",
+      "description": "Get license information for third party users."
+    },
+    {
+      "name": "Room Management",
+      "description": "Get room information for third party users."
+    },
+    {
+      "name": "Device Management",
+      "description": "Get device information/control device for third party users."
+    },
+    {
+      "name": "REACH EPG Upload",
+      "description": "Upload EPG file to LYNK Cloud server for third party users."
+    },
+    {
+      "name": "REACH PMS Middleware Interface",
+      "description": "PMS middleware interface for third party users."
+    }
+  ],
+  "paths": {
+    "/oauth2/token": {
+      "parameters": [
+        {
+          "in": "header",
+          "name": "Authorization",
+          "description": "Authorization is composed of clientId and clientSecret.",
+          "schema": {
+            "type": "string",
+            "example": "Basic b4a0x825z3:96V246C38D496B5964458GGK4JD6F3N2"
+          },
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Third party services need call this api to get access token from Samsung LYNK Cloud server to call any Samsung LYNK Cloud open api.",
+        "description": "",
+        "tags": [
+          "Oauth2 Token"
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "$ref": "#/components/schemas/OauthToken"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/companies": {
+      "parameters": [
+        {
+          "in": "header",
+          "name": "Authorization",
+          "description": "JWT access token",
+          "schema": {
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2RldGFpbHMiOnsiY2xpZW50SWQiOiI1Nzg4MDdmZS01YTFmLTRjYTgtOWQzYy1kYzg5ODJlMTcxM2EiLCJwYXJ0bmVyIjoiU1FBIEVQRyB0ZXN0ZXIiLCJlbWFpbCI6Imx5bmtjbG91ZEBzYW1zdW5nLmNvbSIsInB1cnBvc2UiOiJTUUEiLCJhc3NpZ25lZFNpdGVzIjpbImNjNmVjY2YzLTI2Y2QtNDQ4NC05OWI4LTc1MzlhODljYjI5MCJdLCJzY29wZSI6WyJyOmVwZyIsInc6ZXBnIiwidGhpcmRwYXJ0eV9hcGkiXSwic2VydmljZUV4cGlyeSI6IjIwMjAxMjMxIn0sInNjb3BlIjpbInI6ZXBnIiwidzplcGciLCJ0aGlyZHBhcnR5X2FwaSJdLCJleHAiOjE1NzEyNDY3NDYsInR5cGUiOiJ0aGlyZHBhcnR5IiwiYXV0aG9yaXRpZXMiOlsidzplcGciLCJ0aGlyZHBhcnR5X2FwaSIsInI6ZXBnIl0sImp0aSI6ImU5MDJlYzZkLTg1YjQtNGM4NS04ZTJiLTYzNmZhY2FjMDc3MCIsImNsaWVudF9pZCI6IjU3ODgwN2ZlLTVhMWYtNGNhOC05ZDNjLWRjODk4MmUxNzEzYSJ9.LGQW2N9Z1M0Kxowjg9LrhDIV6NH-i-HQH2rnu3p5lgIUXf29k71liRvfsnyY0hv5wEJgKKA5yH2HbfjiVzGlE3t397IxrfSAPIYUI73ZJVNmRv6BtgBtD52i9iyb0jGdGp1WK4LZPyUZcktWwCYIJ1BIfOtCJUNzGzsoD7szZXBliURoGvu334qVBWEDRa3-j7R2rmYs1unEvE2LD_Ijdq8w7DoiVJ4spEJU4JoVwNl0Lb-nI1318boa7B4MhdhYRLZc4iDDUEgWlFnJhFPTirDHD5hsDhb3HFwFhKR8WsjJwIH9hxn8e6amytBb2OSR0WMfuqEjrvpcc3MvK418hg"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get company belongs to the assigned sites or the company in a client credential.",
+        "description": "",
+        "tags": [
+          "Company Management"
+        ],
+        "responses": {
+          "200": {
+            "description": "Get a list of companies.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "companies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Company"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/sites": {
+      "parameters": [
+        {
+          "in": "header",
+          "name": "Authorization",
+          "description": "JWT access token",
+          "schema": {
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2RldGFpbHMiOnsiY2xpZW50SWQiOiI1Nzg4MDdmZS01YTFmLTRjYTgtOWQzYy1kYzg5ODJlMTcxM2EiLCJwYXJ0bmVyIjoiU1FBIEVQRyB0ZXN0ZXIiLCJlbWFpbCI6Imx5bmtjbG91ZEBzYW1zdW5nLmNvbSIsInB1cnBvc2UiOiJTUUEiLCJhc3NpZ25lZFNpdGVzIjpbImNjNmVjY2YzLTI2Y2QtNDQ4NC05OWI4LTc1MzlhODljYjI5MCJdLCJzY29wZSI6WyJyOmVwZyIsInc6ZXBnIiwidGhpcmRwYXJ0eV9hcGkiXSwic2VydmljZUV4cGlyeSI6IjIwMjAxMjMxIn0sInNjb3BlIjpbInI6ZXBnIiwidzplcGciLCJ0aGlyZHBhcnR5X2FwaSJdLCJleHAiOjE1NzEyNDY3NDYsInR5cGUiOiJ0aGlyZHBhcnR5IiwiYXV0aG9yaXRpZXMiOlsidzplcGciLCJ0aGlyZHBhcnR5X2FwaSIsInI6ZXBnIl0sImp0aSI6ImU5MDJlYzZkLTg1YjQtNGM4NS04ZTJiLTYzNmZhY2FjMDc3MCIsImNsaWVudF9pZCI6IjU3ODgwN2ZlLTVhMWYtNGNhOC05ZDNjLWRjODk4MmUxNzEzYSJ9.LGQW2N9Z1M0Kxowjg9LrhDIV6NH-i-HQH2rnu3p5lgIUXf29k71liRvfsnyY0hv5wEJgKKA5yH2HbfjiVzGlE3t397IxrfSAPIYUI73ZJVNmRv6BtgBtD52i9iyb0jGdGp1WK4LZPyUZcktWwCYIJ1BIfOtCJUNzGzsoD7szZXBliURoGvu334qVBWEDRa3-j7R2rmYs1unEvE2LD_Ijdq8w7DoiVJ4spEJU4JoVwNl0Lb-nI1318boa7B4MhdhYRLZc4iDDUEgWlFnJhFPTirDHD5hsDhb3HFwFhKR8WsjJwIH9hxn8e6amytBb2OSR0WMfuqEjrvpcc3MvK418hg"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get my sites belong to the assigned sites in a client credential.",
+        "description": "",
+        "tags": [
+          "Site Management"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "siteGroupId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The site group ID"
+          },
+          {
+            "in": "query",
+            "name": "roomId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The room ID"
+          },
+          {
+            "in": "query",
+            "name": "roomNumber",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The room number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get a list of sites.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sites": {
+                      "$ref": "#/components/schemas/Sites"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/sites/{siteId}": {
+      "parameters": [
+        {
+          "in": "header",
+          "name": "Authorization",
+          "description": "JWT access token",
+          "schema": {
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2RldGFpbHMiOnsiY2xpZW50SWQiOiI1Nzg4MDdmZS01YTFmLTRjYTgtOWQzYy1kYzg5ODJlMTcxM2EiLCJwYXJ0bmVyIjoiU1FBIEVQRyB0ZXN0ZXIiLCJlbWFpbCI6Imx5bmtjbG91ZEBzYW1zdW5nLmNvbSIsInB1cnBvc2UiOiJTUUEiLCJhc3NpZ25lZFNpdGVzIjpbImNjNmVjY2YzLTI2Y2QtNDQ4NC05OWI4LTc1MzlhODljYjI5MCJdLCJzY29wZSI6WyJyOmVwZyIsInc6ZXBnIiwidGhpcmRwYXJ0eV9hcGkiXSwic2VydmljZUV4cGlyeSI6IjIwMjAxMjMxIn0sInNjb3BlIjpbInI6ZXBnIiwidzplcGciLCJ0aGlyZHBhcnR5X2FwaSJdLCJleHAiOjE1NzEyNDY3NDYsInR5cGUiOiJ0aGlyZHBhcnR5IiwiYXV0aG9yaXRpZXMiOlsidzplcGciLCJ0aGlyZHBhcnR5X2FwaSIsInI6ZXBnIl0sImp0aSI6ImU5MDJlYzZkLTg1YjQtNGM4NS04ZTJiLTYzNmZhY2FjMDc3MCIsImNsaWVudF9pZCI6IjU3ODgwN2ZlLTVhMWYtNGNhOC05ZDNjLWRjODk4MmUxNzEzYSJ9.LGQW2N9Z1M0Kxowjg9LrhDIV6NH-i-HQH2rnu3p5lgIUXf29k71liRvfsnyY0hv5wEJgKKA5yH2HbfjiVzGlE3t397IxrfSAPIYUI73ZJVNmRv6BtgBtD52i9iyb0jGdGp1WK4LZPyUZcktWwCYIJ1BIfOtCJUNzGzsoD7szZXBliURoGvu334qVBWEDRa3-j7R2rmYs1unEvE2LD_Ijdq8w7DoiVJ4spEJU4JoVwNl0Lb-nI1318boa7B4MhdhYRLZc4iDDUEgWlFnJhFPTirDHD5hsDhb3HFwFhKR8WsjJwIH9hxn8e6amytBb2OSR0WMfuqEjrvpcc3MvK418hg"
+          },
+          "required": true
+        },
+        {
+          "in": "path",
+          "name": "siteId",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "The site id"
+        }
+      ],
+      "get": {
+        "summary": "Get site information by site id.",
+        "description": "",
+        "tags": [
+          "Site Management"
+        ],
+        "responses": {
+          "200": {
+            "description": "Get the site.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "site": {
+                      "$ref": "#/components/schemas/Site"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/SiteNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/sitegroups": {
+      "parameters": [
+        {
+          "in": "header",
+          "name": "Authorization",
+          "description": "JWT access token",
+          "schema": {
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2RldGFpbHMiOnsiY2xpZW50SWQiOiI1Nzg4MDdmZS01YTFmLTRjYTgtOWQzYy1kYzg5ODJlMTcxM2EiLCJwYXJ0bmVyIjoiU1FBIEVQRyB0ZXN0ZXIiLCJlbWFpbCI6Imx5bmtjbG91ZEBzYW1zdW5nLmNvbSIsInB1cnBvc2UiOiJTUUEiLCJhc3NpZ25lZFNpdGVzIjpbImNjNmVjY2YzLTI2Y2QtNDQ4NC05OWI4LTc1MzlhODljYjI5MCJdLCJzY29wZSI6WyJyOmVwZyIsInc6ZXBnIiwidGhpcmRwYXJ0eV9hcGkiXSwic2VydmljZUV4cGlyeSI6IjIwMjAxMjMxIn0sInNjb3BlIjpbInI6ZXBnIiwidzplcGciLCJ0aGlyZHBhcnR5X2FwaSJdLCJleHAiOjE1NzEyNDY3NDYsInR5cGUiOiJ0aGlyZHBhcnR5IiwiYXV0aG9yaXRpZXMiOlsidzplcGciLCJ0aGlyZHBhcnR5X2FwaSIsInI6ZXBnIl0sImp0aSI6ImU5MDJlYzZkLTg1YjQtNGM4NS04ZTJiLTYzNmZhY2FjMDc3MCIsImNsaWVudF9pZCI6IjU3ODgwN2ZlLTVhMWYtNGNhOC05ZDNjLWRjODk4MmUxNzEzYSJ9.LGQW2N9Z1M0Kxowjg9LrhDIV6NH-i-HQH2rnu3p5lgIUXf29k71liRvfsnyY0hv5wEJgKKA5yH2HbfjiVzGlE3t397IxrfSAPIYUI73ZJVNmRv6BtgBtD52i9iyb0jGdGp1WK4LZPyUZcktWwCYIJ1BIfOtCJUNzGzsoD7szZXBliURoGvu334qVBWEDRa3-j7R2rmYs1unEvE2LD_Ijdq8w7DoiVJ4spEJU4JoVwNl0Lb-nI1318boa7B4MhdhYRLZc4iDDUEgWlFnJhFPTirDHD5hsDhb3HFwFhKR8WsjJwIH9hxn8e6amytBb2OSR0WMfuqEjrvpcc3MvK418hg"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get my site groups belong to the assigned sites in a client credential.",
+        "description": "",
+        "tags": [
+          "Site Management"
+        ],
+        "responses": {
+          "200": {
+            "description": "Get a list of sites.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "siteGroups": {
+                      "$ref": "#/components/schemas/SiteGroups"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/sitegroups/{siteGroupId}": {
+      "parameters": [
+        {
+          "in": "header",
+          "name": "Authorization",
+          "description": "JWT access token",
+          "schema": {
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2RldGFpbHMiOnsiY2xpZW50SWQiOiI1Nzg4MDdmZS01YTFmLTRjYTgtOWQzYy1kYzg5ODJlMTcxM2EiLCJwYXJ0bmVyIjoiU1FBIEVQRyB0ZXN0ZXIiLCJlbWFpbCI6Imx5bmtjbG91ZEBzYW1zdW5nLmNvbSIsInB1cnBvc2UiOiJTUUEiLCJhc3NpZ25lZFNpdGVzIjpbImNjNmVjY2YzLTI2Y2QtNDQ4NC05OWI4LTc1MzlhODljYjI5MCJdLCJzY29wZSI6WyJyOmVwZyIsInc6ZXBnIiwidGhpcmRwYXJ0eV9hcGkiXSwic2VydmljZUV4cGlyeSI6IjIwMjAxMjMxIn0sInNjb3BlIjpbInI6ZXBnIiwidzplcGciLCJ0aGlyZHBhcnR5X2FwaSJdLCJleHAiOjE1NzEyNDY3NDYsInR5cGUiOiJ0aGlyZHBhcnR5IiwiYXV0aG9yaXRpZXMiOlsidzplcGciLCJ0aGlyZHBhcnR5X2FwaSIsInI6ZXBnIl0sImp0aSI6ImU5MDJlYzZkLTg1YjQtNGM4NS04ZTJiLTYzNmZhY2FjMDc3MCIsImNsaWVudF9pZCI6IjU3ODgwN2ZlLTVhMWYtNGNhOC05ZDNjLWRjODk4MmUxNzEzYSJ9.LGQW2N9Z1M0Kxowjg9LrhDIV6NH-i-HQH2rnu3p5lgIUXf29k71liRvfsnyY0hv5wEJgKKA5yH2HbfjiVzGlE3t397IxrfSAPIYUI73ZJVNmRv6BtgBtD52i9iyb0jGdGp1WK4LZPyUZcktWwCYIJ1BIfOtCJUNzGzsoD7szZXBliURoGvu334qVBWEDRa3-j7R2rmYs1unEvE2LD_Ijdq8w7DoiVJ4spEJU4JoVwNl0Lb-nI1318boa7B4MhdhYRLZc4iDDUEgWlFnJhFPTirDHD5hsDhb3HFwFhKR8WsjJwIH9hxn8e6amytBb2OSR0WMfuqEjrvpcc3MvK418hg"
+          },
+          "required": true
+        },
+        {
+          "in": "path",
+          "name": "siteGroupId",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "The site group id"
+        }
+      ],
+      "get": {
+        "summary": "Get site group by site group id.",
+        "description": "",
+        "tags": [
+          "Site Management"
+        ],
+        "responses": {
+          "200": {
+            "description": "Get the site group.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "siteGroup": {
+                      "$ref": "#/components/schemas/SiteGroup"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/SiteGroupNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/licenses": {
+      "parameters": [
+        {
+          "in": "header",
+          "name": "Authorization",
+          "description": "JWT access token",
+          "schema": {
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2RldGFpbHMiOnsiY2xpZW50SWQiOiI1Nzg4MDdmZS01YTFmLTRjYTgtOWQzYy1kYzg5ODJlMTcxM2EiLCJwYXJ0bmVyIjoiU1FBIEVQRyB0ZXN0ZXIiLCJlbWFpbCI6Imx5bmtjbG91ZEBzYW1zdW5nLmNvbSIsInB1cnBvc2UiOiJTUUEiLCJhc3NpZ25lZFNpdGVzIjpbImNjNmVjY2YzLTI2Y2QtNDQ4NC05OWI4LTc1MzlhODljYjI5MCJdLCJzY29wZSI6WyJyOmVwZyIsInc6ZXBnIiwidGhpcmRwYXJ0eV9hcGkiXSwic2VydmljZUV4cGlyeSI6IjIwMjAxMjMxIn0sInNjb3BlIjpbInI6ZXBnIiwidzplcGciLCJ0aGlyZHBhcnR5X2FwaSJdLCJleHAiOjE1NzEyNDY3NDYsInR5cGUiOiJ0aGlyZHBhcnR5IiwiYXV0aG9yaXRpZXMiOlsidzplcGciLCJ0aGlyZHBhcnR5X2FwaSIsInI6ZXBnIl0sImp0aSI6ImU5MDJlYzZkLTg1YjQtNGM4NS04ZTJiLTYzNmZhY2FjMDc3MCIsImNsaWVudF9pZCI6IjU3ODgwN2ZlLTVhMWYtNGNhOC05ZDNjLWRjODk4MmUxNzEzYSJ9.LGQW2N9Z1M0Kxowjg9LrhDIV6NH-i-HQH2rnu3p5lgIUXf29k71liRvfsnyY0hv5wEJgKKA5yH2HbfjiVzGlE3t397IxrfSAPIYUI73ZJVNmRv6BtgBtD52i9iyb0jGdGp1WK4LZPyUZcktWwCYIJ1BIfOtCJUNzGzsoD7szZXBliURoGvu334qVBWEDRa3-j7R2rmYs1unEvE2LD_Ijdq8w7DoiVJ4spEJU4JoVwNl0Lb-nI1318boa7B4MhdhYRLZc4iDDUEgWlFnJhFPTirDHD5hsDhb3HFwFhKR8WsjJwIH9hxn8e6amytBb2OSR0WMfuqEjrvpcc3MvK418hg"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get my licenses belong to the assigned sites or the company in a client credential.",
+        "description": "",
+        "tags": [
+          "License Management"
+        ],
+        "responses": {
+          "200": {
+            "description": "Get a list of licenses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "licenses": {
+                      "$ref": "#/components/schemas/Licenses"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/licenses/{licenseId}": {
+      "parameters": [
+        {
+          "in": "header",
+          "name": "Authorization",
+          "description": "JWT access token",
+          "schema": {
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2RldGFpbHMiOnsiY2xpZW50SWQiOiI1Nzg4MDdmZS01YTFmLTRjYTgtOWQzYy1kYzg5ODJlMTcxM2EiLCJwYXJ0bmVyIjoiU1FBIEVQRyB0ZXN0ZXIiLCJlbWFpbCI6Imx5bmtjbG91ZEBzYW1zdW5nLmNvbSIsInB1cnBvc2UiOiJTUUEiLCJhc3NpZ25lZFNpdGVzIjpbImNjNmVjY2YzLTI2Y2QtNDQ4NC05OWI4LTc1MzlhODljYjI5MCJdLCJzY29wZSI6WyJyOmVwZyIsInc6ZXBnIiwidGhpcmRwYXJ0eV9hcGkiXSwic2VydmljZUV4cGlyeSI6IjIwMjAxMjMxIn0sInNjb3BlIjpbInI6ZXBnIiwidzplcGciLCJ0aGlyZHBhcnR5X2FwaSJdLCJleHAiOjE1NzEyNDY3NDYsInR5cGUiOiJ0aGlyZHBhcnR5IiwiYXV0aG9yaXRpZXMiOlsidzplcGciLCJ0aGlyZHBhcnR5X2FwaSIsInI6ZXBnIl0sImp0aSI6ImU5MDJlYzZkLTg1YjQtNGM4NS04ZTJiLTYzNmZhY2FjMDc3MCIsImNsaWVudF9pZCI6IjU3ODgwN2ZlLTVhMWYtNGNhOC05ZDNjLWRjODk4MmUxNzEzYSJ9.LGQW2N9Z1M0Kxowjg9LrhDIV6NH-i-HQH2rnu3p5lgIUXf29k71liRvfsnyY0hv5wEJgKKA5yH2HbfjiVzGlE3t397IxrfSAPIYUI73ZJVNmRv6BtgBtD52i9iyb0jGdGp1WK4LZPyUZcktWwCYIJ1BIfOtCJUNzGzsoD7szZXBliURoGvu334qVBWEDRa3-j7R2rmYs1unEvE2LD_Ijdq8w7DoiVJ4spEJU4JoVwNl0Lb-nI1318boa7B4MhdhYRLZc4iDDUEgWlFnJhFPTirDHD5hsDhb3HFwFhKR8WsjJwIH9hxn8e6amytBb2OSR0WMfuqEjrvpcc3MvK418hg"
+          },
+          "required": true
+        },
+        {
+          "in": "path",
+          "name": "licenseId",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "The license id"
+        }
+      ],
+      "get": {
+        "summary": "Get license by license id.",
+        "description": "",
+        "tags": [
+          "License Management"
+        ],
+        "responses": {
+          "200": {
+            "description": "Get license by license id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "license": {
+                      "$ref": "#/components/schemas/License"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/LicenseNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/rooms": {
+      "parameters": [
+        {
+          "in": "header",
+          "name": "Authorization",
+          "description": "JWT access token",
+          "schema": {
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2RldGFpbHMiOnsiY2xpZW50SWQiOiI1Nzg4MDdmZS01YTFmLTRjYTgtOWQzYy1kYzg5ODJlMTcxM2EiLCJwYXJ0bmVyIjoiU1FBIEVQRyB0ZXN0ZXIiLCJlbWFpbCI6Imx5bmtjbG91ZEBzYW1zdW5nLmNvbSIsInB1cnBvc2UiOiJTUUEiLCJhc3NpZ25lZFNpdGVzIjpbImNjNmVjY2YzLTI2Y2QtNDQ4NC05OWI4LTc1MzlhODljYjI5MCJdLCJzY29wZSI6WyJyOmVwZyIsInc6ZXBnIiwidGhpcmRwYXJ0eV9hcGkiXSwic2VydmljZUV4cGlyeSI6IjIwMjAxMjMxIn0sInNjb3BlIjpbInI6ZXBnIiwidzplcGciLCJ0aGlyZHBhcnR5X2FwaSJdLCJleHAiOjE1NzEyNDY3NDYsInR5cGUiOiJ0aGlyZHBhcnR5IiwiYXV0aG9yaXRpZXMiOlsidzplcGciLCJ0aGlyZHBhcnR5X2FwaSIsInI6ZXBnIl0sImp0aSI6ImU5MDJlYzZkLTg1YjQtNGM4NS04ZTJiLTYzNmZhY2FjMDc3MCIsImNsaWVudF9pZCI6IjU3ODgwN2ZlLTVhMWYtNGNhOC05ZDNjLWRjODk4MmUxNzEzYSJ9.LGQW2N9Z1M0Kxowjg9LrhDIV6NH-i-HQH2rnu3p5lgIUXf29k71liRvfsnyY0hv5wEJgKKA5yH2HbfjiVzGlE3t397IxrfSAPIYUI73ZJVNmRv6BtgBtD52i9iyb0jGdGp1WK4LZPyUZcktWwCYIJ1BIfOtCJUNzGzsoD7szZXBliURoGvu334qVBWEDRa3-j7R2rmYs1unEvE2LD_Ijdq8w7DoiVJ4spEJU4JoVwNl0Lb-nI1318boa7B4MhdhYRLZc4iDDUEgWlFnJhFPTirDHD5hsDhb3HFwFhKR8WsjJwIH9hxn8e6amytBb2OSR0WMfuqEjrvpcc3MvK418hg"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get rooms belong to the assigned sites or the company in a client credential.",
+        "description": "",
+        "tags": [
+          "Room Management"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "siteGroupId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The site group ID"
+          },
+          {
+            "in": "query",
+            "name": "siteId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The site ID"
+          },
+          {
+            "in": "query",
+            "name": "deviceId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The device ID"
+          },
+          {
+            "in": "query",
+            "name": "roomNumber",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The room number"
+          },
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The page number"
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The page size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get a list of rooms.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "rooms": {
+                      "$ref": "#/components/schemas/Rooms"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/SiteNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/rooms/{roomId}": {
+      "parameters": [
+        {
+          "in": "header",
+          "name": "Authorization",
+          "description": "JWT access token",
+          "schema": {
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2RldGFpbHMiOnsiY2xpZW50SWQiOiI1Nzg4MDdmZS01YTFmLTRjYTgtOWQzYy1kYzg5ODJlMTcxM2EiLCJwYXJ0bmVyIjoiU1FBIEVQRyB0ZXN0ZXIiLCJlbWFpbCI6Imx5bmtjbG91ZEBzYW1zdW5nLmNvbSIsInB1cnBvc2UiOiJTUUEiLCJhc3NpZ25lZFNpdGVzIjpbImNjNmVjY2YzLTI2Y2QtNDQ4NC05OWI4LTc1MzlhODljYjI5MCJdLCJzY29wZSI6WyJyOmVwZyIsInc6ZXBnIiwidGhpcmRwYXJ0eV9hcGkiXSwic2VydmljZUV4cGlyeSI6IjIwMjAxMjMxIn0sInNjb3BlIjpbInI6ZXBnIiwidzplcGciLCJ0aGlyZHBhcnR5X2FwaSJdLCJleHAiOjE1NzEyNDY3NDYsInR5cGUiOiJ0aGlyZHBhcnR5IiwiYXV0aG9yaXRpZXMiOlsidzplcGciLCJ0aGlyZHBhcnR5X2FwaSIsInI6ZXBnIl0sImp0aSI6ImU5MDJlYzZkLTg1YjQtNGM4NS04ZTJiLTYzNmZhY2FjMDc3MCIsImNsaWVudF9pZCI6IjU3ODgwN2ZlLTVhMWYtNGNhOC05ZDNjLWRjODk4MmUxNzEzYSJ9.LGQW2N9Z1M0Kxowjg9LrhDIV6NH-i-HQH2rnu3p5lgIUXf29k71liRvfsnyY0hv5wEJgKKA5yH2HbfjiVzGlE3t397IxrfSAPIYUI73ZJVNmRv6BtgBtD52i9iyb0jGdGp1WK4LZPyUZcktWwCYIJ1BIfOtCJUNzGzsoD7szZXBliURoGvu334qVBWEDRa3-j7R2rmYs1unEvE2LD_Ijdq8w7DoiVJ4spEJU4JoVwNl0Lb-nI1318boa7B4MhdhYRLZc4iDDUEgWlFnJhFPTirDHD5hsDhb3HFwFhKR8WsjJwIH9hxn8e6amytBb2OSR0WMfuqEjrvpcc3MvK418hg"
+          },
+          "required": true
+        },
+        {
+          "in": "path",
+          "name": "roomId",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "The room id"
+        }
+      ],
+      "get": {
+        "summary": "Get room by room id.",
+        "description": "",
+        "tags": [
+          "Room Management"
+        ],
+        "responses": {
+          "200": {
+            "description": "Get room by room id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "license": {
+                      "$ref": "#/components/schemas/Room"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/RoomNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/devices": {
+      "parameters": [
+        {
+          "in": "header",
+          "name": "Authorization",
+          "description": "JWT access token",
+          "schema": {
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2RldGFpbHMiOnsiY2xpZW50SWQiOiI1Nzg4MDdmZS01YTFmLTRjYTgtOWQzYy1kYzg5ODJlMTcxM2EiLCJwYXJ0bmVyIjoiU1FBIEVQRyB0ZXN0ZXIiLCJlbWFpbCI6Imx5bmtjbG91ZEBzYW1zdW5nLmNvbSIsInB1cnBvc2UiOiJTUUEiLCJhc3NpZ25lZFNpdGVzIjpbImNjNmVjY2YzLTI2Y2QtNDQ4NC05OWI4LTc1MzlhODljYjI5MCJdLCJzY29wZSI6WyJyOmVwZyIsInc6ZXBnIiwidGhpcmRwYXJ0eV9hcGkiXSwic2VydmljZUV4cGlyeSI6IjIwMjAxMjMxIn0sInNjb3BlIjpbInI6ZXBnIiwidzplcGciLCJ0aGlyZHBhcnR5X2FwaSJdLCJleHAiOjE1NzEyNDY3NDYsInR5cGUiOiJ0aGlyZHBhcnR5IiwiYXV0aG9yaXRpZXMiOlsidzplcGciLCJ0aGlyZHBhcnR5X2FwaSIsInI6ZXBnIl0sImp0aSI6ImU5MDJlYzZkLTg1YjQtNGM4NS04ZTJiLTYzNmZhY2FjMDc3MCIsImNsaWVudF9pZCI6IjU3ODgwN2ZlLTVhMWYtNGNhOC05ZDNjLWRjODk4MmUxNzEzYSJ9.LGQW2N9Z1M0Kxowjg9LrhDIV6NH-i-HQH2rnu3p5lgIUXf29k71liRvfsnyY0hv5wEJgKKA5yH2HbfjiVzGlE3t397IxrfSAPIYUI73ZJVNmRv6BtgBtD52i9iyb0jGdGp1WK4LZPyUZcktWwCYIJ1BIfOtCJUNzGzsoD7szZXBliURoGvu334qVBWEDRa3-j7R2rmYs1unEvE2LD_Ijdq8w7DoiVJ4spEJU4JoVwNl0Lb-nI1318boa7B4MhdhYRLZc4iDDUEgWlFnJhFPTirDHD5hsDhb3HFwFhKR8WsjJwIH9hxn8e6amytBb2OSR0WMfuqEjrvpcc3MvK418hg"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get the devices belong to the site/site group/room/device group.",
+        "description": "",
+        "tags": [
+          "Device Management"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "siteGroupId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The site group ID"
+          },
+          {
+            "in": "query",
+            "name": "siteId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The site ID"
+          },
+          {
+            "in": "query",
+            "name": "roomId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The room ID"
+          },
+          {
+            "in": "query",
+            "name": "deviceGroupId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The device group ID"
+          },
+          {
+            "in": "query",
+            "name": "roomNumber",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The room number"
+          },
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The page number"
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The page size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get a list of rooms.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "devices": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Device"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/SiteNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/devices/{deviceId}": {
+      "parameters": [
+        {
+          "in": "header",
+          "name": "Authorization",
+          "description": "JWT access token",
+          "schema": {
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2RldGFpbHMiOnsiY2xpZW50SWQiOiI1Nzg4MDdmZS01YTFmLTRjYTgtOWQzYy1kYzg5ODJlMTcxM2EiLCJwYXJ0bmVyIjoiU1FBIEVQRyB0ZXN0ZXIiLCJlbWFpbCI6Imx5bmtjbG91ZEBzYW1zdW5nLmNvbSIsInB1cnBvc2UiOiJTUUEiLCJhc3NpZ25lZFNpdGVzIjpbImNjNmVjY2YzLTI2Y2QtNDQ4NC05OWI4LTc1MzlhODljYjI5MCJdLCJzY29wZSI6WyJyOmVwZyIsInc6ZXBnIiwidGhpcmRwYXJ0eV9hcGkiXSwic2VydmljZUV4cGlyeSI6IjIwMjAxMjMxIn0sInNjb3BlIjpbInI6ZXBnIiwidzplcGciLCJ0aGlyZHBhcnR5X2FwaSJdLCJleHAiOjE1NzEyNDY3NDYsInR5cGUiOiJ0aGlyZHBhcnR5IiwiYXV0aG9yaXRpZXMiOlsidzplcGciLCJ0aGlyZHBhcnR5X2FwaSIsInI6ZXBnIl0sImp0aSI6ImU5MDJlYzZkLTg1YjQtNGM4NS04ZTJiLTYzNmZhY2FjMDc3MCIsImNsaWVudF9pZCI6IjU3ODgwN2ZlLTVhMWYtNGNhOC05ZDNjLWRjODk4MmUxNzEzYSJ9.LGQW2N9Z1M0Kxowjg9LrhDIV6NH-i-HQH2rnu3p5lgIUXf29k71liRvfsnyY0hv5wEJgKKA5yH2HbfjiVzGlE3t397IxrfSAPIYUI73ZJVNmRv6BtgBtD52i9iyb0jGdGp1WK4LZPyUZcktWwCYIJ1BIfOtCJUNzGzsoD7szZXBliURoGvu334qVBWEDRa3-j7R2rmYs1unEvE2LD_Ijdq8w7DoiVJ4spEJU4JoVwNl0Lb-nI1318boa7B4MhdhYRLZc4iDDUEgWlFnJhFPTirDHD5hsDhb3HFwFhKR8WsjJwIH9hxn8e6amytBb2OSR0WMfuqEjrvpcc3MvK418hg"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get the device by device id.",
+        "description": "",
+        "tags": [
+          "Device Management"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "deviceId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The device id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get the device by device id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "device": {
+                      "$ref": "#/components/schemas/Device"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/DeviceNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update the device with commands.",
+        "description": "",
+        "tags": [
+          "Device Management"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "deviceId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The device id"
+          }
+        ],
+        "requestBody": {
+          "description": "Request parameter to update device.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "device": {
+                    "$ref": "#/components/schemas/DeviceUpdateRequest"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/DeviceNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/devices/{deviceId}/{capabilityUri}": {
+      "parameters": [
+        {
+          "in": "header",
+          "name": "Authorization",
+          "description": "JWT access token",
+          "schema": {
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2RldGFpbHMiOnsiY2xpZW50SWQiOiI1Nzg4MDdmZS01YTFmLTRjYTgtOWQzYy1kYzg5ODJlMTcxM2EiLCJwYXJ0bmVyIjoiU1FBIEVQRyB0ZXN0ZXIiLCJlbWFpbCI6Imx5bmtjbG91ZEBzYW1zdW5nLmNvbSIsInB1cnBvc2UiOiJTUUEiLCJhc3NpZ25lZFNpdGVzIjpbImNjNmVjY2YzLTI2Y2QtNDQ4NC05OWI4LTc1MzlhODljYjI5MCJdLCJzY29wZSI6WyJyOmVwZyIsInc6ZXBnIiwidGhpcmRwYXJ0eV9hcGkiXSwic2VydmljZUV4cGlyeSI6IjIwMjAxMjMxIn0sInNjb3BlIjpbInI6ZXBnIiwidzplcGciLCJ0aGlyZHBhcnR5X2FwaSJdLCJleHAiOjE1NzEyNDY3NDYsInR5cGUiOiJ0aGlyZHBhcnR5IiwiYXV0aG9yaXRpZXMiOlsidzplcGciLCJ0aGlyZHBhcnR5X2FwaSIsInI6ZXBnIl0sImp0aSI6ImU5MDJlYzZkLTg1YjQtNGM4NS04ZTJiLTYzNmZhY2FjMDc3MCIsImNsaWVudF9pZCI6IjU3ODgwN2ZlLTVhMWYtNGNhOC05ZDNjLWRjODk4MmUxNzEzYSJ9.LGQW2N9Z1M0Kxowjg9LrhDIV6NH-i-HQH2rnu3p5lgIUXf29k71liRvfsnyY0hv5wEJgKKA5yH2HbfjiVzGlE3t397IxrfSAPIYUI73ZJVNmRv6BtgBtD52i9iyb0jGdGp1WK4LZPyUZcktWwCYIJ1BIfOtCJUNzGzsoD7szZXBliURoGvu334qVBWEDRa3-j7R2rmYs1unEvE2LD_Ijdq8w7DoiVJ4spEJU4JoVwNl0Lb-nI1318boa7B4MhdhYRLZc4iDDUEgWlFnJhFPTirDHD5hsDhb3HFwFhKR8WsjJwIH9hxn8e6amytBb2OSR0WMfuqEjrvpcc3MvK418hg"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get the device capability status.",
+        "description": "",
+        "tags": [
+          "Device Management"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "deviceId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The device id"
+          },
+          {
+            "in": "path",
+            "name": "capabilityUri",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The capability uri"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get the device capability status.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "capability": {
+                      "$ref": "#/components/schemas/CapabilityWithAttribute"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/DeviceNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update the device capability with commands.",
+        "description": "",
+        "tags": [
+          "Device Management"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "deviceId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The device id"
+          },
+          {
+            "in": "path",
+            "name": "capabilityUri",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The capability uri"
+          }
+        ],
+        "requestBody": {
+          "description": "Request parameter to update device capability.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/DeviceCapabilityUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/DeviceNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/devicegroups": {
+      "parameters": [
+        {
+          "in": "header",
+          "name": "Authorization",
+          "description": "JWT access token",
+          "schema": {
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2RldGFpbHMiOnsiY2xpZW50SWQiOiI1Nzg4MDdmZS01YTFmLTRjYTgtOWQzYy1kYzg5ODJlMTcxM2EiLCJwYXJ0bmVyIjoiU1FBIEVQRyB0ZXN0ZXIiLCJlbWFpbCI6Imx5bmtjbG91ZEBzYW1zdW5nLmNvbSIsInB1cnBvc2UiOiJTUUEiLCJhc3NpZ25lZFNpdGVzIjpbImNjNmVjY2YzLTI2Y2QtNDQ4NC05OWI4LTc1MzlhODljYjI5MCJdLCJzY29wZSI6WyJyOmVwZyIsInc6ZXBnIiwidGhpcmRwYXJ0eV9hcGkiXSwic2VydmljZUV4cGlyeSI6IjIwMjAxMjMxIn0sInNjb3BlIjpbInI6ZXBnIiwidzplcGciLCJ0aGlyZHBhcnR5X2FwaSJdLCJleHAiOjE1NzEyNDY3NDYsInR5cGUiOiJ0aGlyZHBhcnR5IiwiYXV0aG9yaXRpZXMiOlsidzplcGciLCJ0aGlyZHBhcnR5X2FwaSIsInI6ZXBnIl0sImp0aSI6ImU5MDJlYzZkLTg1YjQtNGM4NS04ZTJiLTYzNmZhY2FjMDc3MCIsImNsaWVudF9pZCI6IjU3ODgwN2ZlLTVhMWYtNGNhOC05ZDNjLWRjODk4MmUxNzEzYSJ9.LGQW2N9Z1M0Kxowjg9LrhDIV6NH-i-HQH2rnu3p5lgIUXf29k71liRvfsnyY0hv5wEJgKKA5yH2HbfjiVzGlE3t397IxrfSAPIYUI73ZJVNmRv6BtgBtD52i9iyb0jGdGp1WK4LZPyUZcktWwCYIJ1BIfOtCJUNzGzsoD7szZXBliURoGvu334qVBWEDRa3-j7R2rmYs1unEvE2LD_Ijdq8w7DoiVJ4spEJU4JoVwNl0Lb-nI1318boa7B4MhdhYRLZc4iDDUEgWlFnJhFPTirDHD5hsDhb3HFwFhKR8WsjJwIH9hxn8e6amytBb2OSR0WMfuqEjrvpcc3MvK418hg"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get the device groups.",
+        "description": "",
+        "tags": [
+          "Device Management"
+        ],
+        "responses": {
+          "200": {
+            "description": "Get the device groups.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deviceGroups": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DeviceGroup"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/SiteNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/devicegroups/{deviceGroupId}": {
+      "parameters": [
+        {
+          "in": "header",
+          "name": "Authorization",
+          "description": "JWT access token",
+          "schema": {
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2RldGFpbHMiOnsiY2xpZW50SWQiOiI1Nzg4MDdmZS01YTFmLTRjYTgtOWQzYy1kYzg5ODJlMTcxM2EiLCJwYXJ0bmVyIjoiU1FBIEVQRyB0ZXN0ZXIiLCJlbWFpbCI6Imx5bmtjbG91ZEBzYW1zdW5nLmNvbSIsInB1cnBvc2UiOiJTUUEiLCJhc3NpZ25lZFNpdGVzIjpbImNjNmVjY2YzLTI2Y2QtNDQ4NC05OWI4LTc1MzlhODljYjI5MCJdLCJzY29wZSI6WyJyOmVwZyIsInc6ZXBnIiwidGhpcmRwYXJ0eV9hcGkiXSwic2VydmljZUV4cGlyeSI6IjIwMjAxMjMxIn0sInNjb3BlIjpbInI6ZXBnIiwidzplcGciLCJ0aGlyZHBhcnR5X2FwaSJdLCJleHAiOjE1NzEyNDY3NDYsInR5cGUiOiJ0aGlyZHBhcnR5IiwiYXV0aG9yaXRpZXMiOlsidzplcGciLCJ0aGlyZHBhcnR5X2FwaSIsInI6ZXBnIl0sImp0aSI6ImU5MDJlYzZkLTg1YjQtNGM4NS04ZTJiLTYzNmZhY2FjMDc3MCIsImNsaWVudF9pZCI6IjU3ODgwN2ZlLTVhMWYtNGNhOC05ZDNjLWRjODk4MmUxNzEzYSJ9.LGQW2N9Z1M0Kxowjg9LrhDIV6NH-i-HQH2rnu3p5lgIUXf29k71liRvfsnyY0hv5wEJgKKA5yH2HbfjiVzGlE3t397IxrfSAPIYUI73ZJVNmRv6BtgBtD52i9iyb0jGdGp1WK4LZPyUZcktWwCYIJ1BIfOtCJUNzGzsoD7szZXBliURoGvu334qVBWEDRa3-j7R2rmYs1unEvE2LD_Ijdq8w7DoiVJ4spEJU4JoVwNl0Lb-nI1318boa7B4MhdhYRLZc4iDDUEgWlFnJhFPTirDHD5hsDhb3HFwFhKR8WsjJwIH9hxn8e6amytBb2OSR0WMfuqEjrvpcc3MvK418hg"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get the device group by device group id.",
+        "description": "",
+        "tags": [
+          "Device Management"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "deviceGroupId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Get the device group by device group id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get the device groups.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deviceGroup": {
+                      "$ref": "#/components/schemas/DeviceGroup"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/DeviceGroupNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/epg/upload": {
+      "parameters": [
+        {
+          "in": "header",
+          "name": "Authorization",
+          "description": "JWT access token",
+          "schema": {
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2RldGFpbHMiOnsiY2xpZW50SWQiOiI1Nzg4MDdmZS01YTFmLTRjYTgtOWQzYy1kYzg5ODJlMTcxM2EiLCJwYXJ0bmVyIjoiU1FBIEVQRyB0ZXN0ZXIiLCJlbWFpbCI6Imx5bmtjbG91ZEBzYW1zdW5nLmNvbSIsInB1cnBvc2UiOiJTUUEiLCJhc3NpZ25lZFNpdGVzIjpbImNjNmVjY2YzLTI2Y2QtNDQ4NC05OWI4LTc1MzlhODljYjI5MCJdLCJzY29wZSI6WyJyOmVwZyIsInc6ZXBnIiwidGhpcmRwYXJ0eV9hcGkiXSwic2VydmljZUV4cGlyeSI6IjIwMjAxMjMxIn0sInNjb3BlIjpbInI6ZXBnIiwidzplcGciLCJ0aGlyZHBhcnR5X2FwaSJdLCJleHAiOjE1NzEyNDY3NDYsInR5cGUiOiJ0aGlyZHBhcnR5IiwiYXV0aG9yaXRpZXMiOlsidzplcGciLCJ0aGlyZHBhcnR5X2FwaSIsInI6ZXBnIl0sImp0aSI6ImU5MDJlYzZkLTg1YjQtNGM4NS04ZTJiLTYzNmZhY2FjMDc3MCIsImNsaWVudF9pZCI6IjU3ODgwN2ZlLTVhMWYtNGNhOC05ZDNjLWRjODk4MmUxNzEzYSJ9.LGQW2N9Z1M0Kxowjg9LrhDIV6NH-i-HQH2rnu3p5lgIUXf29k71liRvfsnyY0hv5wEJgKKA5yH2HbfjiVzGlE3t397IxrfSAPIYUI73ZJVNmRv6BtgBtD52i9iyb0jGdGp1WK4LZPyUZcktWwCYIJ1BIfOtCJUNzGzsoD7szZXBliURoGvu334qVBWEDRa3-j7R2rmYs1unEvE2LD_Ijdq8w7DoiVJ4spEJU4JoVwNl0Lb-nI1318boa7B4MhdhYRLZc4iDDUEgWlFnJhFPTirDHD5hsDhb3HFwFhKR8WsjJwIH9hxn8e6amytBb2OSR0WMfuqEjrvpcc3MvK418hg"
+          },
+          "required": true
+        },
+        {
+          "in": "header",
+          "name": "Content-Type",
+          "description": "A standard MIME type describing the format of the contents",
+          "schema": {
+            "type": "string",
+            "default": "binary/octet-stream",
+            "example": "binary/octet-stream"
+          },
+          "required": true
+        },
+        {
+          "in": "header",
+          "name": "Content-MD5",
+          "description": "MD5 checksum hash of the file, please refer https://howtodoinjava.com/java/io/how-to-generate-sha-or-md5-file-checksum-hash-in-java/",
+          "schema": {
+            "type": "string",
+            "example": "e8005c0c693bd8f280948a30e692a600"
+          },
+          "required": false
+        },
+        {
+          "in": "header",
+          "name": "Content-Length",
+          "description": "The size of the file, in bytes",
+          "schema": {
+            "type": "string",
+            "maximum": 20480,
+            "example": 1024
+          },
+          "required": true
+        },
+        {
+          "in": "header",
+          "name": "File-Name",
+          "description": "Specify the upload epg file name",
+          "schema": {
+            "type": "string",
+            "example": "epg.data"
+          },
+          "required": true
+        },
+        {
+          "in": "query",
+          "name": "siteId",
+          "schema": {
+            "type": "string",
+            "example": "cc6eccf3-26cd-4484-99b8-7539a89cb290"
+          },
+          "required": true,
+          "description": "The site id"
+        }
+      ],
+      "put": {
+        "summary": "Upload EPG file to LYNK Cloud server.",
+        "description": "",
+        "tags": [
+          "REACH EPG Upload"
+        ],
+        "requestBody": {
+          "description": "Request parameter to upload epg file.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "example": "<epg>test</epg>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/SiteNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/openapi/checkin": {
+      "post": {
+        "tags": [
+          "SystemAPI"
+        ],
+        "summary": "Notify check-in information to Hotel Solution server.",
+        "description": "■ Sender/Requestor\n  - Middleware server\n  \n■ Receiver/Responder\n  - LYNK CLOUD\n  \nThe service sends IP address of TV which is installed in the room where new guest has checked in. Hotel Solution server will send back status code as acknowledgement.  Send parameters via HTTP HEADER.",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "query",
+            "description": "siteId for each hotel site. This is unique id managed by RMS",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "cc6eccf3-26cd-4484-99b8-7539a89cb290"
+            }
+          },
+          {
+            "name": "guestname",
+            "in": "header",
+            "description": "Guest name",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Shuangxi Chen"
+            }
+          },
+          {
+            "name": "roomnumber",
+            "in": "header",
+            "description": "Room number that guest stays",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": 1802
+            }
+          },
+          {
+            "name": "companyname",
+            "in": "header",
+            "description": "Guest's Company Name or Group name",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Samsung Electronics"
+            }
+          },
+          {
+            "name": "language",
+            "in": "header",
+            "description": "Guest's language(refer to 'LangaugeCode' Schema)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ENG"
+            }
+          },
+          {
+            "name": "personalinfo",
+            "in": "header",
+            "description": "refer to 'personalinfo' Schema below",
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/personalinfo"
+            },
+            "required": false
+          },
+          {
+            "name": "checkininfo",
+            "in": "header",
+            "description": "refer to 'checkininfo' Schema below",
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/checkininfo"
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation of message being delievered",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/reachresponse-checkin"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/openapi/checkout": {
+      "delete": {
+        "tags": [
+          "SystemAPI"
+        ],
+        "summary": "Notify check-out information to Hotel Solution server",
+        "description": "■ Sender/Requestor\n  - Middleware server\n  \n■ Receiver/Responder\n  - LYNK CLOUD\n  \nThe service sends IP address of TV which is installed in the room which new guest has checked out. Hotel Solution server has responsibility to send back status code as acknowledgement. Send parameters via HTTP HEADER.",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "query",
+            "description": "siteId for each hotel site. This is unique id managed by RMS",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "cc6eccf3-26cd-4484-99b8-7539a89cb290"
+            }
+          },
+          {
+            "name": "roomnumber",
+            "in": "header",
+            "description": "Room number that guest stays",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": 1802
+            }
+          },
+          {
+            "name": "checkininfo",
+            "in": "header",
+            "description": "refer to 'checkininfo' Schema below",
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/checkininfo"
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation of message being delievered",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/reachresponse-checkout"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/openapi/multicheckin": {
+      "post": {
+        "tags": [
+          "SystemAPI"
+        ],
+        "summary": "Notify check-in information to LYNK SINC server.",
+        "description": "■ Sender/Requestor\n  - Middleware server\n  \n■ Receiver/Responder\n  - LYNK CLOUD\n  \nThe service sends guestdetails of new guests to be checked in. Hotel Solution server will send back status code as acknowledgement.  Send parameters via HTTP HEADER.",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "query",
+            "description": "siteId for each hotel site. This is unique id managed by RMS",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "cc6eccf3-26cd-4484-99b8-7539a89cb290"
+            }
+          },
+          {
+            "name": "guestdetails",
+            "in": "header",
+            "description": "guestdetails of the guests who want to checkin is sent in predefined format.(refer to guestdetails Schema)",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/guestdetails"
+            }
+          },
+          {
+            "name": "roomnumber",
+            "in": "header",
+            "description": "Room number that guest stays",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": 1802
+            }
+          },
+          {
+            "name": "language",
+            "in": "header",
+            "description": "Common language for all guests.(refer to 'LangaugeCode' Schemas)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ENG"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation of message being delievered",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/reachresponse-multicheckin"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/openapi/multicheckout": {
+      "post": {
+        "tags": [
+          "SystemAPI"
+        ],
+        "summary": "Notify check-out information to Hotel Solution server.",
+        "description": "■ Sender/Requestor\n  - Middleware server\n  \n■ Receiver/Responder\n  - LYNK CLOUD\n  \nThe service sends guestdetails of new guests to be checked out. Server has responsibility to send back status code as acknowledgement. Send parameters via HTTP HEADER.",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "query",
+            "description": "siteId for each hotel site. This is unique id managed by RMS",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "cc6eccf3-26cd-4484-99b8-7539a89cb290"
+            }
+          },
+          {
+            "name": "guestdetails",
+            "in": "header",
+            "description": "guestdetails of the guests who want to checkin is sent in predefined format.(refer to guestdetails Schema)",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/guestdetails"
+            }
+          },
+          {
+            "name": "roomnumber",
+            "in": "header",
+            "description": "Room number that guest stays",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": 1802
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation of message being delievered",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/reachresponse-multicheckout"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/openapi/hello": {
+      "post": {
+        "tags": [
+          "SystemAPI"
+        ],
+        "summary": "Indicates that Middleware server/Hotel Solution server has started up",
+        "description": "■ Sender/Requestor\n  - Middleware server\n  \n■ Receiver/Responder\n  - LYNK CLOUD\n  \nIndicates that Middleware server is started up. Middleware server send this request to LYNK Cloud on initial setup or reboot.",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "query",
+            "description": "siteId for each hotel site. This is unique id managed by RMS",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "cc6eccf3-26cd-4484-99b8-7539a89cb290"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation of message being delievered",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/reachresponse-hello"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/openapi/heartbeat": {
+      "post": {
+        "tags": [
+          "SystemAPI"
+        ],
+        "summary": "Indicates that Middleware server is alive.",
+        "description": "■ Sender/Requestor\n  - Middleware server\n  \n■ Receiver/Responder\n  - LYNK CLOUD\n  \nIndicates that Middleware server is alive. Middleware server send this request to LYNK Cloud every 5 mins. If LYNK Cloud not receving this request, it will assume the connection with Middeleware server is lost. ",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "query",
+            "description": "siteId for each hotel site. This is unique id managed by RMS",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "cc6eccf3-26cd-4484-99b8-7539a89cb290"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation of message being delievered",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/reachresponse-heartbeat"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/openapi/roomslist": {
+      "post": {
+        "tags": [
+          "SystemAPI"
+        ],
+        "summary": "Send the status of all rooms to Hotel Solution server.",
+        "description": "■ Sender/Requestor\n  - Middleware server\n  \n■ Receiver/Responder\n  - LYNK CLOUD\n  \nWhenever Middleware server is started up(initial setup/reboot), after sending hello request, it will send the status of all rooms to Hotel Solution server.",
+        "parameters": [
+          {
+            "name": "siteId",
+            "in": "query",
+            "description": "siteId for each hotel site. This is unique id managed by RMS",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "cc6eccf3-26cd-4484-99b8-7539a89cb290"
+            }
+          },
+          {
+            "name": "rooms",
+            "in": "header",
+            "description": "guestdetails of the guests who want to checkin is sent in predefined format.(refer to guestdetails Schema)",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/roomsinfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation of message being delievered",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/reachresponse-roomslist"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Access token is missing or invalid"
+      },
+      "BadRequest": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "example": {
+              "code": "FILE_SIZE_ERROR",
+              "message": "The file size is too large."
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "example": {
+              "code": "UNAUTHORIZED",
+              "message": "Access token is invalid."
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "Forbidden",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "example": {
+              "code": "FORBIDDEN",
+              "message": "You have no permission to access the resource."
+            }
+          }
+        }
+      },
+      "SiteNotFound": {
+        "description": "Site Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "example": {
+              "code": "SITE_NOT_FOUND",
+              "message": "The site id is not existed."
+            }
+          }
+        }
+      },
+      "SiteGroupNotFound": {
+        "description": "Site group Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "example": {
+              "code": "SITE_GROUP_NOT_FOUND",
+              "message": "The site group id is not existed."
+            }
+          }
+        }
+      },
+      "LicenseNotFound": {
+        "description": "License Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "example": {
+              "code": "LICENSE_NOT_FOUND",
+              "message": "The license id is not existed."
+            }
+          }
+        }
+      },
+      "RoomNotFound": {
+        "description": "Room Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "example": {
+              "code": "ROOM_NOT_FOUND",
+              "message": "The room id is not existed."
+            }
+          }
+        }
+      },
+      "DeviceNotFound": {
+        "description": "Device Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "example": {
+              "code": "DEVICE_NOT_FOUND",
+              "message": "The device id is not existed."
+            }
+          }
+        }
+      },
+      "DeviceGroupNotFound": {
+        "description": "Device Group Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "example": {
+              "code": "DEVICE_GROUP_NOT_FOUND",
+              "message": "The device group id is not existed."
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Internal Server Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "example": {
+              "code": "INTERNAL_ERROR",
+              "message": "We encountered an internal error. Please try again."
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ]
+      },
+      "OauthToken": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "token_type": {
+            "type": "string"
+          },
+          "expires_in": {
+            "type": "integer"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "user_details": {
+            "$ref": "#/components/schemas/UserDetails"
+          },
+          "type": {
+            "type": "string"
+          },
+          "jti": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2RldGFpbHMiOnsiY2xpZW50SWQiOiI1Nzg4MDdmZS01YTFmLTRjYTgtOWQzYy1kYzg5ODJlMTcxM2IiLCJwYXJ0bmVyIjoiU1FBRVBHdGVzdGVyMSIsImVtYWlsIjoibHlua2Nsb3VkQHNhbXN1bmcuY29tIiwicHVycG9zZSI6IlNRQSIsImFzc2lnbmVkU2l0ZXMiOlsiY2M2ZWNjZjMtMjZjZC00NDg0LTk5YjgtNzUzOWE4OWNiMjkwIl0sInNjb3BlIjpbInI6ZXBnIiwidzplcGciLCJ0aGlyZHBhcnR5X2FwaSJdLCJzZXJ2aWNlRXhwaXJ5IjoiMjAyMDEyMzEifSwic2NvcGUiOlsicjplcGciLCJ3OmVwZyIsInRoaXJkcGFydHlfYXBpIl0sImV4cCI6MTU3MjI4MzU0OCwidHlwZSI6InRoaXJkcGFydHkiLCJhdXRob3JpdGllcyI6WyJ3OmVwZyIsInRoaXJkcGFydHlfYXBpIiwicjplcGciXSwianRpIjoiMmNkZTc5MDctMTE1MS00NzZhLWEwYTMtZDZmODQzYmE5NzZhIiwiY2xpZW50X2lkIjoiNTc4ODA3ZmUtNWExZi00Y2E4LTlkM2MtZGM4OTgyZTE3MTNhIn0.X4FpUhdhrE2iKulKVe7GxS3K2TJCtK9uxL6eor7DdP9ymAQjebUFdIpFc_bmEb0HbipZHeOnXPleQMkRFR4nk9E2Dn4PM24493z4NQMPU5ECsQGnY6OwMUW804vc5xjpWlLYI50NYuyU9z6ZAWbkKkmpJVBh-MBNQMnLmS9Qg4WZ1ibMVjqaUgLZGmCsaT8FJ-4U12EQEuCk-lRWDUCQYDuAgZ3TMkHIgdj2bbO2sCN5QZ__YS1-sDO1W6sAllJJbDvQVyxiAVbLE4bYHWC-nw3Bua5OwYxTIC-0ITJy7xqKlE2CTwjtEdDykDAteRftCkZKYE8gu-PRzkQs1gDLEw",
+          "token_type": "bearer",
+          "expires_in": 43199,
+          "scope": "r:epg w:epg thirdparty_api",
+          "user_details": {
+            "clientId": "578807fe-5a1f-4ca8-9d3c-dc8982e1713b",
+            "partner": "SQAEPGtester1",
+            "email": "lynkcloud@samsung.com",
+            "purpose": "SQA",
+            "assignedSites": [
+              "cc6eccf3-26cd-4484-99b8-7539a89cb290"
+            ],
+            "scope": [
+              "r:epg",
+              "w:epg",
+              "thirdparty_api"
+            ],
+            "serviceExpiry": "20201231"
+          },
+          "type": "thirdparty",
+          "jti": "2cde7907-1151-476a-a0a3-d6f843ba976a"
+        }
+      },
+      "UserDetails": {
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string"
+          },
+          "partner": {
+            "type": "string"
+          },
+          "email": {
+            "type": "integer"
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "assignedSites": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "scope": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "serviceExpiry": {
+            "type": "string"
+          }
+        }
+      },
+      "Company": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "hqAddress": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "approvalStatus": {
+            "type": "string"
+          },
+          "registerTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "approveTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "example": {
+          "id": "0004-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+          "name": "Samsung",
+          "code": "205633",
+          "hqAddress": "AnDeMen Street 57#, Nanjing City, Jiangsu Province, China",
+          "phoneNumber": "86+02558748787",
+          "approvalStatus": "Approved",
+          "description": "Samsung China",
+          "registerTime": "2019-01-17T13:29:17.000",
+          "approveTime": "2019-01-17T13:29:17.000"
+        }
+      },
+      "Sites": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Site"
+        },
+        "example": [
+          {
+            "id": "0003-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+            "name": "LYNK Cloud Site1",
+            "companyId": "0004-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+            "description": "Site in Nanjing"
+          },
+          {
+            "id": "0003-b3fab52d-40c8-4822-8fcd-ec3d5920fb2d",
+            "name": "LYNK Cloud Site2",
+            "companyId": "0004-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+            "description": "Site in Beijing"
+          }
+        ]
+      },
+      "Site": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": "0003-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+          "name": "LYNK Cloud Site1",
+          "companyId": "0004-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+          "description": "Site in Nanjing"
+        }
+      },
+      "SiteGroup": {
+        "type": "object",
+        "properties": {
+          "siteGroupId": {
+            "type": "string"
+          },
+          "siteGroupName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "sites": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "example": {
+          "siteGroupId": "010896f6-5a7d-4bb0-a677-5d351de34982",
+          "siteGroupName": "Sitegroup1",
+          "companyId": "0004-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+          "description": "LYNK Cloud Site group 1",
+          "sites": [
+            "0003-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+            "0003-b3fab52d-40c8-4822-8fcd-ec3d5920fb1b"
+          ]
+        }
+      },
+      "SiteGroups": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SiteGroup"
+        },
+        "example": [
+          {
+            "siteGroupId": "010896f6-5a7d-4bb0-a677-5d351de34982",
+            "siteGroupName": "Sitegroup1",
+            "companyId": "0004-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+            "description": "LYNK Cloud Site group 1",
+            "sites": [
+              "0003-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+              "0003-b3fab52d-40c8-4822-8fcd-ec3d5920fb1b"
+            ]
+          },
+          {
+            "siteGroupId": "06e1461a-036f-491f-a11c-49feec1a6dca",
+            "siteGroupName": "Sitegroup2",
+            "companyId": "0004-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+            "description": "LYNK Cloud Site group 2",
+            "sites": [
+              "0003-b3fab52d-40c8-4822-8fcd-ec3d5920fb2d",
+              "0003-b3fab52d-40c8-4822-8fcd-ec3d5920fb23"
+            ]
+          }
+        ]
+      },
+      "Licenses": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/License"
+        },
+        "example": [
+          {
+            "id": "058043d9-7056-45fc-ab8c-eb206980d088",
+            "key": "011120-MRTTKS-7GZE2U-VOHD",
+            "type": "CM",
+            "status": "Activated",
+            "companyId": "47547219-6ed7-4de7-bbcf-e0e30f0a8c49",
+            "expiredTime": "2020-12-31T00:00:00.000"
+          },
+          {
+            "id": "058043d9-7056-45fc-ab8c-eb206980d000",
+            "key": "011120-MRTTKS-7GZE2U-VOBC",
+            "type": "DM",
+            "status": "Activated",
+            "companyId": "47547219-6ed7-4de7-bbcf-e0e30f0a8c49",
+            "expiredTime": "2020-12-31T00:00:00.000"
+          }
+        ]
+      },
+      "License": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "CM",
+              "DM"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Activated",
+              "Expired",
+              "Deactivated"
+            ]
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "expiredTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "example": {
+          "id": "058043d9-7056-45fc-ab8c-eb206980d088",
+          "key": "011120-MRTTKS-7GZE2U-VOHD",
+          "type": "CM",
+          "status": "Activated",
+          "companyId": "47547219-6ed7-4de7-bbcf-e0e30f0a8c49",
+          "expiredTime": "2020-12-31T00:00:00.000"
+        }
+      },
+      "Rooms": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Room"
+        },
+        "example": [
+          {
+            "id": "0006-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+            "roomNumber": "r101",
+            "siteId": "0003-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+            "roomStatus": "Occupied",
+            "bookingStatus": "Checkin",
+            "checkinDate": "2019-10-11T14:00:00.000",
+            "checkoutDate": "2019-10-13T09:00:00.000"
+          },
+          {
+            "id": "0006-b3fab52d-40c8-4822-8fcd-ec3d5920fb1b",
+            "roomNumber": "r102",
+            "siteId": "0003-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+            "roomStatus": "Occupied",
+            "bookingStatus": "Checkin",
+            "checkinDate": "2019-10-11T14:00:00.000",
+            "checkoutDate": "2019-10-16T08:00:00.000"
+          },
+          {
+            "id": "0006-b3fab52d-40c8-4822-8fcd-ec3d5920fb1c",
+            "roomNumber": "r103",
+            "siteId": "0003-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+            "roomStatus": "Occupied",
+            "bookingStatus": "Checkin",
+            "checkinDate": "2019-10-11T14:00:00.000",
+            "checkoutDate": "2019-10-14T08:00:00.000"
+          }
+        ]
+      },
+      "Room": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "roomNumber": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "roomStatus": {
+            "type": "string",
+            "enum": [
+              "Occupied",
+              "Unoccupied"
+            ]
+          },
+          "bookingStatus": {
+            "type": "string",
+            "enum": [
+              "Checkin",
+              "Checkout"
+            ]
+          },
+          "siteId": {
+            "type": "string"
+          },
+          "checkinDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "checkoutDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "example": {
+          "id": "0006-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+          "roomNumber": "r101",
+          "siteId": "0003-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+          "roomStatus": "Occupied",
+          "bookingStatus": "Checkin",
+          "checkinDate": "2019-10-11T14:00:00.000",
+          "checkoutDate": "2019-10-13T09:00:00.000"
+        }
+      },
+      "Device": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "originalId": {
+            "type": "string"
+          },
+          "deviceType": {
+            "type": "string"
+          },
+          "connectStatus": {
+            "type": "string",
+            "enum": [
+              "Connected",
+              "Disconnected"
+            ]
+          },
+          "approvalStatus": {
+            "type": "string",
+            "enum": [
+              "Approved",
+              "Unapproved"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "capabilities": {
+            "$ref": "#/components/schemas/Capabilities"
+          },
+          "container": {
+            "$ref": "#/components/schemas/Container"
+          }
+        },
+        "example": {
+          "id": "0005-b3fab52d-40c8-4822-8fcd-ec3d5920fb1b",
+          "name": "TV1",
+          "originalId": "84949CC5-4701-4A84-895B-354C584A981B",
+          "deviceType": "TV",
+          "description": "samsung tv",
+          "connectStatus": "Connected",
+          "approvalStatus": "Approved",
+          "capabilities": [
+            {
+              "capabilityName": "power",
+              "capabilityUri": "/power"
+            },
+            {
+              "capabilityName": "audio",
+              "capabilityUri": "/audio"
+            },
+            {
+              "capabilityName": "tvChannel",
+              "capabilityUri": "/tvchannel"
+            }
+          ],
+          "container": {
+            "siteGroupId": "010896f6-5a7d-4bb0-a677-5d351de34982",
+            "siteGroupName": "Sitegroup1",
+            "siteId": "0003-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+            "siteName": "LYNK Cloud Site1",
+            "deviceGroups": [
+              {
+                "deviceGroupId": "43e2497d-1ec9-4172-bc49-6159ef75aede",
+                "deviceGroupName": "deviceGroup1"
+              }
+            ],
+            "roomId": "0006-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+            "roomNumber": "r101"
+          }
+        }
+      },
+      "DeviceUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "capabilities": {
+            "$ref": "#/components/schemas/CapabilitiesWithCommand"
+          }
+        },
+        "example": {
+          "capabilities": [
+            {
+              "capabilityName": "power",
+              "commands": [
+                {
+                  "name": "setPowerState",
+                  "parameters": {
+                    "state": {
+                      "value": "On"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "capabilityName": "audio",
+              "commands": [
+                {
+                  "name": "volumeUp",
+                  "parameters": null
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "DeviceCapabilityUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "object",
+            "$ref": "#/components/schemas/Command"
+          }
+        },
+        "example": {
+          "capability": {
+            "commands": [
+              {
+                "name": "setPowerState",
+                "parameters": {
+                  "state": {
+                    "value": "On"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "Capabilities": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Capability"
+        }
+      },
+      "Capability": {
+        "type": "object",
+        "properties": {
+          "capabilityName": {
+            "type": "string",
+            "enum": [
+              "panel",
+              "audio",
+              "tvChannel",
+              "inputSource",
+              "tvConfig",
+              "tvChannelMap",
+              "tvApplication",
+              "networkSetting",
+              "firmware",
+              "power",
+              "broadcast",
+              "urlLauncher"
+            ]
+          },
+          "capabilityUri": {
+            "type": "string",
+            "enum": [
+              "/panel",
+              "/audio",
+              "/tvchannel",
+              "/inputsource",
+              "/tvconfig",
+              "/tvchannelmap",
+              "/tvapplication",
+              "/networksetting",
+              "/firmware",
+              "/power",
+              "/broadcast",
+              "/urllauncher"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "$ref": "#/components/schemas/CapabilityAttributes"
+          },
+          "command": {
+            "type": "object",
+            "$ref": "#/components/schemas/CapabilityCommands"
+          }
+        }
+      },
+      "CapabilitiesWithCommand": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/CapabilityWithCommand"
+        }
+      },
+      "CapabilityWithCommand": {
+        "type": "object",
+        "properties": {
+          "capabilityName": {
+            "type": "string",
+            "enum": [
+              "panel",
+              "audio",
+              "tvChannel",
+              "inputSource",
+              "tvConfig",
+              "tvChannelMap",
+              "tvApplication",
+              "networkSetting",
+              "firmware",
+              "power",
+              "broadcast",
+              "urlLauncher"
+            ]
+          },
+          "commands": {
+            "type": "object",
+            "$ref": "#/components/schemas/CapabilityCommands"
+          }
+        }
+      },
+      "CapabilityWithAttribute": {
+        "type": "object",
+        "properties": {
+          "capabilityName": {
+            "type": "string",
+            "enum": [
+              "panel",
+              "audio",
+              "tvChannel",
+              "inputSource",
+              "tvConfig",
+              "tvChannelMap",
+              "tvApplication",
+              "networkSetting",
+              "firmware",
+              "power",
+              "broadcast",
+              "urlLauncher"
+            ]
+          },
+          "capabilityUri": {
+            "type": "string",
+            "enum": [
+              "/panel",
+              "/audio",
+              "/tvchannel",
+              "/inputsource",
+              "/tvconfig",
+              "/tvchannelmap",
+              "/tvapplication",
+              "/networksetting",
+              "/firmware",
+              "/power",
+              "/broadcast",
+              "/urllauncher"
+            ]
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/CapabilityAttributes"
+          }
+        },
+        "example": {
+          "capabilityName": "audio",
+          "capabilityUri": "/audio",
+          "attributes": {
+            "volume": {
+              "value": 12
+            },
+            "mute": {
+              "value": "Off"
+            }
+          }
+        }
+      },
+      "Container": {
+        "type": "object",
+        "properties": {
+          "siteGroupId": {
+            "type": "string"
+          },
+          "siteGroupName": {
+            "type": "string"
+          },
+          "siteId": {
+            "type": "string"
+          },
+          "siteName": {
+            "type": "string"
+          },
+          "deviceGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeviceGroupInfo"
+            }
+          },
+          "roomId": {
+            "type": "string"
+          },
+          "roomNumber": {
+            "type": "string"
+          }
+        }
+      },
+      "DeviceGroupInfo": {
+        "type": "object",
+        "properties": {
+          "deviceGroupId": {
+            "type": "string"
+          },
+          "deviceGroupName": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "deviceGroupId": "43e2497d-1ec9-4172-bc49-6159ef75aede",
+          "deviceGroupName": "deviceGroup1"
+        }
+      },
+      "DeviceGroup": {
+        "type": "object",
+        "properties": {
+          "deviceGroupId": {
+            "type": "string"
+          },
+          "deviceGroupName": {
+            "type": "string"
+          },
+          "siteId": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "devices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeviceInfo"
+            }
+          }
+        },
+        "example": {
+          "deviceGroupId": "43e2497d-1ec9-4172-bc49-6159ef75aede",
+          "deviceGroupName": "deviceGroup1",
+          "siteId": "0003-b3fab52d-40c8-4822-8fcd-ec3d5920fb1a",
+          "description": "samsung device group",
+          "devices": [
+            {
+              "deviceName": "tv1",
+              "deviceId": "CPCJZEMATCEN6"
+            },
+            {
+              "deviceName": "tv2",
+              "deviceId": "2DCJY4WRLWDXM"
+            },
+            {
+              "deviceName": "tv3",
+              "deviceId": "43CJ72JNUVKF2"
+            }
+          ]
+        }
+      },
+      "DeviceInfo": {
+        "type": "object",
+        "properties": {
+          "deviceId": {
+            "type": "string"
+          },
+          "deviceName": {
+            "type": "string"
+          }
+        }
+      },
+      "CapabilityCommands": {
+        "description": "A map of command name and command parameters.",
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/CapabilityAttribute"
+        }
+      },
+      "Command": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "parameters": {
+            "$ref": "#/components/schemas/CommandParameters"
+          }
+        }
+      },
+      "CommandParameters": {
+        "description": "A map of parameter name to parameter value.",
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/CommandParameter"
+        }
+      },
+      "CommandParameter": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "object"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "CapabilityAttributes": {
+        "description": "A map of attribute name to attribute value.",
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/CapabilityAttribute"
+        }
+      },
+      "CapabilityAttribute": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "object"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "checkininfo": {
+        "type": "object",
+        "properties": {
+          "RoomNo": {
+            "type": "string",
+            "description": "roomnumber",
+            "example": 101
+          },
+          "RoomType": {
+            "type": "string",
+            "description": "Type of room, Delux, Suite",
+            "example": "Single"
+          },
+          "Smoking": {
+            "type": "integer",
+            "format": "Enum",
+            "description": "NO=0, YES=1 [Room is Smoking or not]",
+            "example": 0
+          },
+          "Check-Instatus": {
+            "type": "integer",
+            "format": "Enum",
+            "description": "Check-Out=0, Check-In=1",
+            "example": 1
+          },
+          "Checked-Indate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "YYYY-MM-DD hh:mm:ss [24hour format]",
+            "example": "2014-09-12 12:10:05"
+          },
+          "departureDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "YYYY-MM-DD hh:mm:ss [24hour format]",
+            "example": "2014-09-13"
+          },
+          "travelAgent": {
+            "type": "string",
+            "description": "Details of the travel Agent/Guide if any, otherwise empty tag",
+            "example": "Sejung"
+          },
+          "Source": {
+            "type": "string",
+            "description": "Booking Source. Online booking portal Travel Desk etc, otherwise empty tag",
+            "example": "TripAdvisor"
+          }
+        }
+      },
+      "personalinfo": {
+        "type": "object",
+        "properties": {
+          "Age": {
+            "type": "string",
+            "description": "Age of the Guest",
+            "example": 25
+          },
+          "Sex": {
+            "type": "integer",
+            "format": "Enum",
+            "description": "Male=0, Female=1",
+            "example": 0
+          },
+          "Country": {
+            "type": "string",
+            "description": "Country name of the Guest",
+            "example": "China"
+          },
+          "Company": {
+            "type": "string",
+            "description": "Organization of the Guest if Any, Otherwise empty tag",
+            "example": "Samsung Electronics"
+          },
+          "VIP": {
+            "type": "integer",
+            "format": "Enum",
+            "description": "non-VIP=0, VIP=1",
+            "example": 1
+          }
+        }
+      },
+      "guestinfo": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "guestname:guestid",
+            "example": "Tom:43562143"
+          },
+          "company": {
+            "type": "string",
+            "description": "Organization of the Guest if Any, Otherwise empty tag",
+            "example": "Samsung Electronics"
+          }
+        }
+      },
+      "guestinfo-2": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "guestname:guestid",
+            "example": "Jimmy:73532142"
+          },
+          "company": {
+            "type": "string",
+            "description": "Organization of the Guest if Any, Otherwise empty tag",
+            "example": "Google Inc."
+          }
+        }
+      },
+      "guestinfo-3": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "guestname:guestid",
+            "example": "Paul:93522443"
+          },
+          "company": {
+            "type": "string",
+            "description": "Organization of the Guest if Any, Otherwise empty tag",
+            "example": "Sony Electronics"
+          }
+        }
+      },
+      "guestdetails": {
+        "type": "object",
+        "description": "```json\n{\"1\":{\"name\":\"Tom Robin:43562135\",\"company\":\"abc\"},\n  \"2\":{\"name\":\"Jimmy Johnson:4525362\",\"company\":\"samsung\"},\n  \"3\":{\"name\":\" Stephan Norton:43562143\",\"company\":\"abc\"}}\n```\nNote: Here the name field includes both name and id ‘guestname:guestid’\n\nGuests sharing a room can use the multicheckin/multicheckout requests to arrive/depart at different times.\n\ne.g. if guest Tom Robin  and Jimmy Johnson wants to check in to roomnumber 100 on Monday then a multicheckin request will be sent by middleware server and ‘guestdetails’ will be sent in the following format:\n\n```json\n{\"1\":{\"name\":\"Tom Robin:43562135\",\"company\":\"abc\"},\n\"2\":{\"name\":\"Jimmy Johnson:4525362\",\"company\":\"samsung\"}}\n```\n\nIf another guest Stephan Norton wants to check in later in the same room as Tom Robin and Jimmy Johnson; then a multicheckin request will be sent by middleware server and ‘guestdetails’ will be sent in the following format:\n\n```json\n{\"1\":{\"name\":\" Stephan Norton:43562143\",\"company\":\"abc\"}}\n```\n",
+        "properties": {
+          "1": {
+            "type": "object",
+            "$ref": "#/components/schemas/guestinfo"
+          },
+          "2": {
+            "type": "object",
+            "$ref": "#/components/schemas/guestinfo-2"
+          },
+          "3": {
+            "type": "object",
+            "$ref": "#/components/schemas/guestinfo-3"
+          }
+        }
+      },
+      "roomsinfo": {
+        "type": "object",
+        "properties": {
+          "room": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/roominfo"
+            }
+          },
+          "statuscode": {
+            "type": "integer",
+            "description": "refer to 'StatusCode' Schemas below",
+            "example": 0
+          },
+          "guestservicestatus": {
+            "type": "integer",
+            "description": "No Service = 0, Do Not Disturb = 1, MakeUpRoom = 2",
+            "example": 0
+          }
+        }
+      },
+      "roominfo": {
+        "type": "object",
+        "properties": {
+          "roomnumber": {
+            "type": "string",
+            "description": "Room number that guest stays",
+            "example": 100
+          },
+          "roomstatus": {
+            "type": "string",
+            "description": "Indicate if the room is occupied.  TRUE : occupied, FALSE: Not occupied ",
+            "example": true
+          },
+          "guests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/guestinfo-in-roomsinfo"
+            }
+          },
+          "servicecode": {
+            "type": "integer",
+            "description": "No Service = 0, Do Not Disturb = 1, MakeUpRoom = 2",
+            "example": 0
+          }
+        }
+      },
+      "guestinfo-in-roomsinfo": {
+        "type": "object",
+        "properties": {
+          "guestname": {
+            "type": "string",
+            "description": "Name and guestid of the guest whose bill has been updated. guestname:guestid",
+            "example": "Tom:43562143"
+          }
+        }
+      },
+      "reachresponse": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string",
+            "description": "Send back service name which was received and performed. e.g. checkin / checkout / hello / heartbeat / multicheckin / multicheckout / roomslist",
+            "example": [
+              "checkin",
+              "checkout",
+              "hello",
+              "start",
+              "multicheckin",
+              "multicheckout"
+            ]
+          },
+          "statuscode": {
+            "type": "integer",
+            "description": "refer to 'StatusCode' Schemas below",
+            "example": 0
+          }
+        },
+        "xml": {
+          "name": "response"
+        }
+      },
+      "reachresponse-checkin": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string",
+            "description": "Send back service name which was received and performed. e.g. checkin / checkout / hello / heartbeat / multicheckin / multicheckout / roomslist",
+            "example": "checkin"
+          },
+          "statuscode": {
+            "type": "integer",
+            "description": "refer to 'StatusCode' Schemas below",
+            "example": 0
+          }
+        },
+        "xml": {
+          "name": "response"
+        }
+      },
+      "reachresponse-checkout": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string",
+            "description": "Send back service name which was received and performed. e.g. checkin / checkout / hello / heartbeat / multicheckin / multicheckout / roomslist",
+            "example": "checkout"
+          },
+          "statuscode": {
+            "type": "integer",
+            "description": "refer to 'StatusCode' Schemas below",
+            "example": 0
+          }
+        },
+        "xml": {
+          "name": "response"
+        }
+      },
+      "reachresponse-hello": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string",
+            "description": "Send back service name which was received and performed. e.g. checkin / checkout / hello / heartbeat / multicheckin / multicheckout / roomslist",
+            "example": "hello"
+          },
+          "statuscode": {
+            "type": "integer",
+            "description": "refer to 'StatusCode' Schemas below",
+            "example": 0
+          }
+        },
+        "xml": {
+          "name": "response"
+        }
+      },
+      "reachresponse-heartbeat": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string",
+            "description": "Send back service name which was received and performed. e.g. checkin / checkout / hello / heartbeat / multicheckin / multicheckout / roomslist",
+            "example": "heartbeat"
+          },
+          "statuscode": {
+            "type": "integer",
+            "description": "refer to 'StatusCode' Schemas below",
+            "example": 0
+          }
+        },
+        "xml": {
+          "name": "response"
+        }
+      },
+      "reachresponse-multicheckin": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string",
+            "description": "Send back service name which was received and performed. e.g. checkin / checkout / hello / heartbeat / multicheckin / multicheckout / roomslist",
+            "example": "multicheckin"
+          },
+          "statuscode": {
+            "type": "integer",
+            "description": "refer to 'StatusCode' Schemas below",
+            "example": 0
+          }
+        },
+        "xml": {
+          "name": "response"
+        }
+      },
+      "reachresponse-multicheckout": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string",
+            "description": "Send back service name which was received and performed. e.g. checkin / checkout / hello / heartbeat / multicheckin / multicheckout / roomslist",
+            "example": "multicheckout"
+          },
+          "statuscode": {
+            "type": "integer",
+            "description": "refer to 'StatusCode' Schemas below",
+            "example": 0
+          }
+        },
+        "xml": {
+          "name": "response"
+        }
+      },
+      "reachresponse-roomslist": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string",
+            "description": "Send back service name which was received and performed. e.g. checkin / checkout / hello / heartbeat / multicheckin / multicheckout / roomslist",
+            "example": "roomslist"
+          },
+          "statuscode": {
+            "type": "integer",
+            "description": "refer to 'StatusCode' Schemas below",
+            "example": 0
+          }
+        },
+        "xml": {
+          "name": "response"
+        }
+      },
+      "StatusCode": {
+        "description": "Error code | Error message\n----------------|-------------\n0 | Success \n1 | Unknown command\n2 | Both IP address and Room number are not valid.\n3 | Room unoccupied\n4 | Unknown Account number\n5 | Account number not checked into room\n6 | Invalid payment method\n7 | Account balance changed\n8 | Locked folio\n9 | Guest message not found\n10 | Guest message cannot be delivered\n11 | Not allowed at this time of day\n"
+      },
+      "LangaugeCode": {
+        "description": "Lang code | description\n----------------|-------------\nENG | English \nKOR | Korean\nJPN | Japanese\nFRA | French\nDEU | Italian\nSPA | Spanish\nITA | Italian\nPOR | Portuguese\nALB | Albanian\nBUL | Bulgarian\nCRO | Croatian\nCZE | Czech\nDAN | Danish\nDUT | Dutch\nEST | Estonia\nFIN | Finnish\nGRE | Greek\nHUN | Hungarian\nKAZ | Kazakhs\nLAT | Latvia\nLTU | Lithuania\nMAC | Macedonian\nNOR | Norwegian\nPOL | Polish\nROM | Romanian\nRUS | Russian\nSER | Serbian\nSLK | Slovak\nSLV | Slovenian\nSWE | Swedish \nTUR | Turkish \nUKR | Ukrainian \nCHI | Chinese \nHKG | HongKong \nTPE | Taiwan \nTHA | Thai \nARB | Arabic \nFSI | Farsi \nHEB | Hebrew \nIND | Indonesian \nMAL | Malay \nVIE | Vietnamese \nTAM | Tamil \nDEV | Devanagri \nURD | Urdu \nAFR | Afrikaans \nZUL | Zulu \nSWA | Kswahili \nAMH | Amharic \nYOR | Yoruba \nIGB | Igbo \nHAU | Hausa \nXHO | Xhosa \nTHA | Thai \nARB | Arabic \nFSI | Farsi \nHEB | Hebrew \nIND | Indonesian \nMAL | Malay \nVIE | Vietnamese \nTAM | Tamil \nDEV | Devanagri\n"
+      }
+    }
+  }
+}
